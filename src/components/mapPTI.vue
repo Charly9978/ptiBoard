@@ -5,10 +5,11 @@
 <script>
 import {db} from '@/main.js'
 
+
 export default {
   name: 'google-map',
-  props: ['name'],
-  data: function () {
+  props: ['name','nbr'],
+  data() {
     return {
       mapName: this.name + "-map",
       datas: [],
@@ -19,9 +20,13 @@ export default {
       positions:[]
     }
   },
-  mounted: function () {
+  methods :{
+    mapPosition(){
+      this.datas = [];
+      this.positions =[];
+      this.markers =[];
     const trame = db.collection('Devices').doc('867856031189845').collection('trame');
-    trame.orderBy('date','desc').limit(10)
+    trame.orderBy('date','desc').limit(this.nbr)
     .get()
     .then((querySnapshot)=>{
         querySnapshot.forEach((doc)=>{
@@ -104,7 +109,14 @@ export default {
       path.setMap(this.map);
     
     })
-}
+    }
+  },
+  mounted(){
+    this.mapPosition()
+  },
+  watch:{
+  nbr(){this.mapPosition()}
+  }
 }
 </script>
 

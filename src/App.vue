@@ -30,14 +30,10 @@
     </v-toolbar>
     <v-content>
       <v-container fluid>
-        <v-layout row wrap>
-          <v-flex v-for="(data, index) in datas" 
-          :key="index" 
-          ma-3 xs6 md2 lm2 xl2>
-            <dashboard v-bind:datapti="data"/>
-          </v-flex>
-       </v-layout>
-       <mappti/>
+      
+            <!-- <dashboard v-for="(data, index) in datas" 
+          :key="index" v-bind:datapti="data"/> -->
+          <pti/>
 
       </v-container>
   
@@ -54,11 +50,11 @@
 
 import dashboard from './components/dashbord.vue'
 import { db } from './main'
-import mappti from './components/mapPTI.vue'
+import pti from './components/pti.vue'
 
   export default {
     components:{
-      dashboard,mappti
+      dashboard,pti
     },
     created:function(){
       db.collection("Devices").onSnapshot((querySnapshot) => {

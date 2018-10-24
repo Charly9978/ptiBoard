@@ -1,5 +1,5 @@
 <template>
-    <div>
+        <v-flex ma-3 xs6 md2 lm2 xl2>
         <v-card pb-3 class="indigo lighten-4" hover>
             <v-card-title v-if="datapti.alarme.type && datapti.alarme.type !== 'lowBattery'" primary-title class="red darken-2 white--text">
                 <div class="headline">Alarme:</div>
@@ -38,8 +38,7 @@
                 </div>
             </v-card-text>
         </v-card>
-
-    </div>
+        </v-flex>
 
 
 </template>
