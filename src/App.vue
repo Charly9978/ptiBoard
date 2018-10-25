@@ -31,8 +31,8 @@
     <v-content>
       <v-container fluid>
       
-            <!-- <dashboard v-for="(data, index) in datas" 
-          :key="index" v-bind:datapti="data"/> -->
+          <!-- <dashboard v-for="(device, index) in devices" 
+          :key="index" v-bind:device="device"/> -->
           <pti/>
 
       </v-container>
@@ -49,22 +49,15 @@
 
 
 import dashboard from './components/dashbord.vue'
-import { db } from './main'
 import pti from './components/pti.vue'
+import { mapState, mapActions } from 'vuex'
 
   export default {
     components:{
       dashboard,pti
     },
-    created:function(){
-      db.collection("Devices").onSnapshot((querySnapshot) => {
-        this.datas = []
-      querySnapshot.forEach((doc) => {
-        const data={id:doc.id,telBip:doc.data().telBip,useArea:doc.data().useArea,alarme:doc.data().alarme,inCharge:doc.data().inCharge};
-        console.log(data)
-        this.datas.push(data);
-        })
-    });
+    created(){
+      this.$store.dispatch('getAllDevices')//devices/
       },    
     data(){
       return{
@@ -73,6 +66,9 @@ import pti from './components/pti.vue'
         newAlarm:{}
       } 
       },
+    computed: mapState({
+    devices: state => state.all //devices.
+  }),
     methods:{
       coucou () {
         this.drawer = !this.drawer;

@@ -9,11 +9,11 @@
                     <v-card class="my-3">
 
                         <v-alert
-                        v-model="alarm"
+                        v-model="device.alarme.type"
                         dismissible
                         type="error"
                         >
-                        Alarme PTI: fallDown.
+                        Alarme PTI: {{device.alarme.type}}.
                         </v-alert>
                         <v-toolbar color="cyan" dark>
                             <v-toolbar-title>Historique des positions</v-toolbar-title>
@@ -31,46 +31,52 @@
                     </v-card>
                     <v-card class="my-3">
                         <v-toolbar color="cyan" dark>
-                            <v-toolbar-title>Information sur le BIP nomdubip</v-toolbar-title>
+                            <v-toolbar-title>Information sur le bip "{{device.name}}"</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-toolbar-tile-action>
+                                            <v-btn v-on:click="openDialogue" icon ripple>
+                                                <v-icon>person_add</v-icon>
+                                            </v-btn>
+                                        </v-toolbar-tile-action>
                         </v-toolbar>
                         <v-list>
                         <v-list-tile>
                             <v-list-tile-content>
-                            <v-list-tile-title>Téléphone du Bip</v-list-tile-title>
-                            <v-list-tile-sub-title>coucoubis</v-list-tile-sub-title>
+                            <v-list-tile-title>Téléphone du bip</v-list-tile-title>
+                            <v-list-tile-sub-title>{{device.telBip}}</v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
 
-                        <v-list-tile>
+                        <v-list-tile v-if="!device.user.name">
                             <v-list-tile-content>
                             <v-list-tile-title>Zone d'utilisation</v-list-tile-title>
-                            <v-list-tile-sub-title>coucoubis</v-list-tile-sub-title>
-                            </v-list-tile-content>
+                            <v-list-tile-sub-title>{{device.useArea}}</v-list-tile-sub-title>
+                            </v-list-tile-content>             
                         </v-list-tile>
 
-                        <v-list-group >
+                        <v-list-group v-else>
                             <v-list-tile slot="activator">
                                 <v-list-tile-content>
                                     <v-list-tile-title>Utilisateur</v-list-tile-title>
-                                    <v-list-tile-sub-title>coucoubis</v-list-tile-sub-title>
+                                    <v-list-tile-sub-title>{{device.user.name}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
                                     <v-list-tile-title>Entreprise</v-list-tile-title>
-                                    <v-list-tile-sub-title>coucoubis</v-list-tile-sub-title>
+                                    <v-list-tile-sub-title>{{device.user.company}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
                                     <v-list-tile-title>Zone d'utilisation</v-list-tile-title>
-                                    <v-list-tile-sub-title>coucoubis</v-list-tile-sub-title>
+                                    <v-list-tile-sub-title>{{device.user.useArea}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
                                 <v-list-tile-content>
                                     <v-list-tile-title>Téléphone</v-list-tile-title>
-                                    <v-list-tile-sub-title>coucoubis</v-list-tile-sub-title>
+                                    <v-list-tile-sub-title>{{device.user.tel}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                              </v-list-tile>
                             <v-list-tile>
@@ -85,8 +91,8 @@
 
                         <v-list-tile>
                             <v-list-tile-content>
-                            <v-list-tile-title>En cours de charge</v-list-tile-title>
-                            <v-list-tile-sub-title>coucoubis</v-list-tile-sub-title>
+                            <v-list-tile-title>Situation</v-list-tile-title>
+                            <v-list-tile-sub-title>{{device.inCharge.status?'En cours de charge':`En cours d'utilisation`}}</v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
                         </v-list>
@@ -97,6 +103,41 @@
                 </v-layout>
             </v-flex>
         </v-layout>
+        <v-layout row justify-center>
+      <v-dialog v-model="dialog" persistent max-width="500px">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Ajouter un utilisateur du bip</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-text-field v-model="newUser.name" label="Nom" required></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="newUser.company" label="Entreprise" hint="example of helper text only on focus"></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="newUser.tel"
+                    label="Téléphone"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="newUser.useArea" label="Zone d'utilisation" hint="BerninX, bat X, NivX, precision" ></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click.native="dialog = false">Annuler</v-btn>
+            <v-btn color="blue darken-1" flat @click.native="sendNewUser">Enregistrer</v-btn>
+            <v-btn color="blue darken-1" flat @click.native="clearUser">Effacer</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-layout>
     </div>
 </template>
 
@@ -113,12 +154,56 @@ export default {
           selected:1,
           nbrs:[1,10,20],
           alarm:"true",
-          data:[]
+          newUser:{
+              name:null,
+              company:null,
+              useArea:null,
+              tel:null
+          },
+          id:'867856031189845',
+          dialog:false
       }
 
   },
-  created(){
-      db.collection('Devices').doc(EIMI).get().then()
+  methods:{
+      openDialogue(){
+          this.newUser.name = this.device.user.name;
+          this.newUser.company = this.device.user.company;
+          this.newUser.tel = this.device.user.tel;
+          this.newUser.useArea = this.device.user.useArea;
+          this.dialog = true;
+      },
+      sendNewUser(){
+          db.collection('Devices').doc(this.id).update({
+              user:this.newUser
+          })
+          .then(()=>{
+              console.log(`Nouvel User enregistrer pour le bip ${this.id}`);
+              this.dialog = false
+              })
+          .catch(()=>console.error(`echec d'enregistrement du nouvel utilisateur pour le bip ${this.id}`))
+      },
+      clearUser(){
+          this.newUser.name = null;
+          this.newUser.company = null;
+          this.newUser.tel = null;
+          this.newUser.useArea = null;
+          db.collection('Devices').doc(this.id).update({
+              user:this.newUser
+          })
+          .then(()=>{
+              console.log(`User effacé pour le bip ${this.id}`);
+              this.dialog = false
+              })
+          .catch(()=>console.error(`echec d'enregistrement du nouvel utilisateur pour le bip ${this.id}`))
+
+      },
+  },
+  computed:{
+      device(){
+      return this.$store.getters.getDeviceById(this.id)
+      }
   }
+
 };
 </script>

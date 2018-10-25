@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import './plugins/vuetify'
 import App from './App.vue'
+import store from './store'
+
 //import router from './router'
 import firebase from 'firebase';
 // Required for side-effects
@@ -23,5 +25,6 @@ Vue.config.productionTip = false
 
 new Vue({
   //router,
+  store,
   render: h => h(App)
 }).$mount('#app')

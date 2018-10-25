@@ -1,13 +1,17 @@
-import shop from '../../api/shop'
+
 import {db} from '@/main.js'
 
 // initial state
 const state = {
-  devices: []
+  all: []
 }
 
 // getters
-const getters = {}
+const getters = {
+    getDeviceById:(state)=>(id)=>{
+       return state.all.find(device=>device.id ===id)
+    }
+}
 
 // actions
 const actions = {
@@ -15,7 +19,7 @@ const actions = {
     db.collection("Devices").onSnapshot((querySnapshot) => {
         const datas = []
       querySnapshot.forEach((doc) => {
-        const data={id:doc.id,telBip:doc.data().telBip,useArea:doc.data().useArea,alarme:doc.data().alarme,inCharge:doc.data().inCharge};
+        const data={id:doc.id,name:doc.data().name,telBip:doc.data().telBip,useArea:doc.data().useArea,alarme:doc.data().alarme,inCharge:doc.data().inCharge,user:doc.data().user};
         console.log(data)
         datas.push(data);
         })
@@ -28,17 +32,13 @@ const actions = {
 // mutations
 const mutations = {
   setDevices (state, datas) {
-    state.devices = datas
+    state.all = datas
   },
 
-  decrementProductInventory (state, { id }) {
-    const product = state.all.find(product => product.id === id)
-    product.inventory--
-  }
 }
 
 export default {
-  namespaced: true,
+  //namespaced: true,
   state,
   getters,
   actions,
