@@ -4,31 +4,34 @@
             <v-flex xs12 md7 lm7 xl7>
                 <mappti v-bind:nbr='selected' v-bind:id="id"/>
             </v-flex>
+
+
             <v-flex xs12 md5 lm5 xl5>
                 <v-layout column>
-                    <v-card class="my-3">
 
-                        <v-alert
-                        v-model="device.alarme.type"
-                        dismissible
-                        type="error"
-                        >
-                        Alarme PTI: {{device.alarme.type}}.
-                        </v-alert>
-                        <v-toolbar color="cyan" dark>
-                            <v-toolbar-title>Historique des positions</v-toolbar-title>
+
+                    <v-card class="my-3" v-show="device.alarme.type">
+                        <v-toolbar color="error">
+                            <v-icon>warning</v-icon>
+                            <v-toolbar-title>Alarme:</v-toolbar-title>
+                            <span>{{device.alarme.type}}</span>
+                        <v-spacer></v-spacer>
+                        <v-btn icon>
+                             <v-icon>notifications_off</v-icon>
+                        </v-btn>
+                        <v-btn @click="dialogConfirm=true" icon>
+                             <v-icon>cancel</v-icon>
+                        </v-btn>
                         </v-toolbar>
-                        <v-list>
-                        <v-list-tile>
-                                <v-select
-                                    v-model = "selected"
-                                    :items="nbrs"
-                                    placeholder="nombre de positions"
-                                    full-width                                 
-                                ></v-select>
-                        </v-list-tile>
-                        </v-list>
                     </v-card>
+
+
+
+
+
+
+
+
                     <v-card class="my-3">
                         <v-toolbar color="cyan" dark>
                             <v-toolbar-title>Information sur le bip "{{device.name}}"</v-toolbar-title>
@@ -95,10 +98,24 @@
                             <v-list-tile-sub-title>{{device.inCharge.status?'En cours de charge':`En cours d'utilisation`}}</v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
+                        </v-list>               
+                    </v-card>
+
+                    <v-card class="my-3">
+
+                        <v-toolbar color="cyan" dark>
+                            <v-toolbar-title>Historique des positions</v-toolbar-title>
+                        </v-toolbar>
+                        <v-list>
+                        <v-list-tile>
+                                <v-select
+                                    v-model = "selected"
+                                    :items="nbrs"
+                                    placeholder="nombre de positions"
+                                    full-width                                 
+                                ></v-select>
+                        </v-list-tile>
                         </v-list>
-
-
-                            
                     </v-card>
                 </v-layout>
             </v-flex>
@@ -116,7 +133,7 @@
                   <v-text-field v-model="newUser.name" label="Nom" required></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="newUser.company" label="Entreprise" hint="example of helper text only on focus"></v-text-field>
+                  <v-text-field v-model="newUser.company" label="Entreprise"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field v-model="newUser.tel"
@@ -138,6 +155,21 @@
         </v-card>
       </v-dialog>
     </v-layout>
+    
+
+      <v-layout row justify-center>
+    <v-dialog v-model="dialogConfirm" persistent max-width="350">
+      <v-card>
+        <v-card-title class="headline">Etes-vous sur de vouloir acquitter cette alarme?</v-card-title>
+        <v-card-text>Attention, l'acquittement est définitif, l'information d'une alarme en cours sur ce bip sera effacée</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click.native="dialogConfirm = false">Non</v-btn>
+          <v-btn flat @click.native="alarmeOff">Oui</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-layout>
     </div>
 </template>
 
@@ -161,7 +193,8 @@ export default {
               tel:null
           },
           id:this.$route.params.id,
-          dialog:false
+          dialog:false,
+          dialogConfirm:false
       }
 
   },
@@ -197,6 +230,20 @@ export default {
               })
           .catch(()=>console.error(`echec d'enregistrement du nouvel utilisateur pour le bip ${this.id}`))
 
+      },
+      alarmeOff(){
+          db.collection('Devices').doc(this.id).update({
+              'alarme.date': null,
+              'alarme.type':null
+          })
+          .then(()=>{
+              console.log(`Alarme effacée pour le bip ${this.id}`);
+              this.dialogConfirm = false
+              })
+          .catch(()=>{
+              console.error(`echec de l'effacement de l'alarme pour le bip ${this.id}`)
+              this.dialogConfirm = false
+          })
       },
   },
   computed:{

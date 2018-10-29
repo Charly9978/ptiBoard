@@ -7,7 +7,7 @@
     >
       <v-list dense>
         <v-list-tile @click="coucou">
-          <v-list-tile-action>
+          <v-list-tile-action >
             <v-icon>home</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
@@ -65,6 +65,7 @@ import { mapState, mapActions } from 'vuex'
     methods:{
       coucou () {
         this.drawer = !this.drawer;
+        this.$router.push('/')
       } 
 
     }  
