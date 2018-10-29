@@ -2,7 +2,7 @@
     <div>
         <v-layout row>
             <v-flex xs12 md7 lm7 xl7>
-                <mappti v-bind:nbr='selected'/>
+                <mappti v-bind:nbr='selected' v-bind:id="id"/>
             </v-flex>
             <v-flex xs12 md5 lm5 xl5>
                 <v-layout column>
@@ -160,7 +160,7 @@ export default {
               useArea:null,
               tel:null
           },
-          id:'867856031189845',
+          id:this.$route.params.id,
           dialog:false
       }
 

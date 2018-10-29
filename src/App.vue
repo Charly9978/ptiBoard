@@ -31,9 +31,7 @@
     <v-content>
       <v-container fluid>
       
-          <!-- <dashboard v-for="(device, index) in devices" 
-          :key="index" v-bind:device="device"/> -->
-          <pti/>
+          <router-view></router-view>
 
       </v-container>
   
@@ -48,27 +46,22 @@
 
 
 
-import dashboard from './components/dashbord.vue'
-import pti from './components/pti.vue'
 import { mapState, mapActions } from 'vuex'
 
   export default {
-    components:{
-      dashboard,pti
-    },
     created(){
-      this.$store.dispatch('getAllDevices')//devices/
-      },    
+       this.$store.dispatch('getAllDevices')//devices/
+       },    
     data(){
       return{
         drawer: false,
-        datas:[],
-        newAlarm:{}
+        //datas:[],
+        //newAlarm:{}
       } 
       },
-    computed: mapState({
-    devices: state => state.all //devices.
-  }),
+  //   computed: mapState({
+  //   devices: state => state.all //devices.
+  // }),
     methods:{
       coucou () {
         this.drawer = !this.drawer;

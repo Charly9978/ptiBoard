@@ -1,12 +1,10 @@
 <template>
-        <v-flex ma-3 xs6 md2 lm2 xl2>
-        <v-card pb-3 class="indigo lighten-4" hover>
+        <v-card pb-3 class="indigo lighten-4" hover :to="`./device/${device.id}`">
             <v-card-title v-if="device.alarme.type && device.alarme.type !== 'lowBattery'" primary-title class="red darken-2 white--text">
                 <div class="headline">Alarme:</div>
                 <span>type: {{device.alarme.type}}</span>
                 <v-icon
                     medium
-                    @click="initAlarme"
                 >
                     alarme
                 </v-icon>
@@ -37,9 +35,6 @@
                 </div>
             </v-card-text>
         </v-card>
-        </v-flex>
-
-
 </template>
 <script>
     import {db} from '@/main.js'
@@ -52,14 +47,8 @@
 
                 }
             }
-        },
-        methods:{
-            initAlarme(){
-                db.collection('Devices').doc(this.device.id).update({
-                    alarme:{}
-                }).then(()=>console.log('mise à jour réussi')).catch((err=>console.error('mise à jour non réussi')))
-            }
         }
+
 
     }
 </script>

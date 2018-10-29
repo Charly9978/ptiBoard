@@ -8,10 +8,10 @@ import {db} from '@/main.js'
 
 export default {
   name: 'google-map',
-  props: ['name','nbr'],
+  props: ['id','nbr'],
   data() {
     return {
-      mapName: this.name + "-map",
+      mapName: this.id + "-map",
       datas: [],
       map: null,
       bounds: null,
@@ -25,7 +25,7 @@ export default {
       this.datas = [];
       this.positions =[];
       this.markers =[];
-    const trame = db.collection('Devices').doc('867856031189845').collection('trame');
+    const trame = db.collection('Devices').doc(this.id).collection('trame');
     trame.orderBy('date','desc').limit(this.nbr)
     .get()
     .then((querySnapshot)=>{
