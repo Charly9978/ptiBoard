@@ -1,5 +1,10 @@
 <template>
+
   <v-app id="inspire">
+    <audio autoplay loop v-if="$store.getters.getAlarme">
+  <source src="@/assets/9248.ogg" type="audio/ogg">
+  Votre navigateur ne prend pas en charge l'élément <code>audio</code>.
+</audio>
     <v-navigation-drawer
       v-model="drawer"
       fixed
@@ -59,9 +64,11 @@ import { mapState, mapActions } from 'vuex'
         //newAlarm:{}
       } 
       },
-  //   computed: mapState({
-  //   devices: state => state.all //devices.
-  // }),
+  computed:{
+    alarmeOn(){
+      return this.$store.getters.getAlarme
+    }
+  },
     methods:{
       coucou () {
         this.drawer = !this.drawer;

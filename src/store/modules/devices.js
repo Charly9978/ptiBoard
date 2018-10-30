@@ -3,13 +3,17 @@ import {db} from '@/main.js'
 
 // initial state
 const state = {
-  all: []
+  all: [],
+  alarme:false
 }
 
 // getters
 const getters = {
     getDeviceById:(state)=>(id)=>{
        return state.all.find(device=>device.id ===id)
+    },
+    getAlarme:(state)=>{
+      return state.alarme
     }
 }
 
@@ -30,9 +34,15 @@ const actions = {
           user:doc.data().user
         };
         console.log(data)
+        console.log(data.name)
+        console.log(data.alarme.type)
         datas.push(data);
-        })
+        if(data.alarme.type){
+          commit('setAlarmeOn')
+        }
         commit('setDevices', datas)
+        
+        })
     })
 
   }
@@ -43,6 +53,12 @@ const mutations = {
   setDevices (state, datas) {
     state.all = datas
   },
+  setAlarmeOn(state) {
+    state.alarme = true
+  },
+  setAlarmeOff(state){
+    state.alarme = false
+  }
 
 }
 

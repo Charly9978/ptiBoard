@@ -16,7 +16,7 @@
                             <v-toolbar-title>Alarme:</v-toolbar-title>
                             <span>{{device.alarme.type}}</span>
                             <v-spacer></v-spacer>
-                            <v-btn icon>
+                            <v-btn @click="alarmeBellOff" icon>
                                 <v-icon>notifications_off</v-icon>
                             </v-btn>
                             <v-btn @click="dialogConfirm=true" icon>
@@ -243,6 +243,9 @@
                         this.dialogConfirm = false
                     })
             },
+            alarmeBellOff(){
+                this.$store.commit('setAlarmeOff')
+            }
         },
         computed: {
             device() {
