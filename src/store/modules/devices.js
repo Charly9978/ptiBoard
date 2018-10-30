@@ -19,7 +19,16 @@ const actions = {
     db.collection("Devices").onSnapshot((querySnapshot) => {
         const datas = []
       querySnapshot.forEach((doc) => {
-        const data={id:doc.id,name:doc.data().name,telBip:doc.data().telBip,useArea:doc.data().useArea,alarme:doc.data().alarme,inCharge:doc.data().inCharge,user:doc.data().user};
+        const data={
+          id:doc.id,
+          name:doc.data().name,
+          telBip:doc.data().telBip,
+          useArea:doc.data().useArea,
+          alarme:doc.data().alarme,
+          inCharge:doc.data().inCharge,
+          levelBattery:doc.data().levelBattery,
+          user:doc.data().user
+        };
         console.log(data)
         datas.push(data);
         })

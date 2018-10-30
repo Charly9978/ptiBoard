@@ -23,14 +23,13 @@
                 <div>Tel du bip: {{device.telBip}}</div>
                 <v-divider></v-divider>
                 <br>
-                <div>Zone: {{device.useArea}}</div>
-                <v-divider></v-divider>
-                <br>
-                <div>Utilisateur:
+                <div v-if="!device.user.name">Zone: {{device.useArea}}</div>
+                <div v-else> Utilisateur:
                     <ul>
-                        <li>nom</li>
-                        <li>tel:</li>
-                        <li>entreprise</li>
+                        <li>nom: {{device.user.name}}</li>
+                        <li>tel: {{device.user.tel}}</li>
+                        <li>entreprise: {{device.user.company}}</li>
+                        <li>zone d'utilisation: {{device.user.useArea}}</li>
                     </ul>
                 </div>
             </v-card-text>
