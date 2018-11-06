@@ -14,21 +14,16 @@
 
 
 <script>
+
 import pticard from './ptiCard.vue'
-import {mapState} from 'vuex'
 
 export default{
   components:{
     pticard
   },
-  data(){
-    return {
-      mess: 'coucou'
-    }
-  },
   computed:{
     devices(){
-    return this.$store.state.devices.all
+    return this.$store.getters.getDevices
     }
   }
 

@@ -3,9 +3,7 @@
             <v-card-title v-if="device.alarme.type && device.alarme.type !== 'lowBattery'" primary-title class="red darken-2 white--text">
                 <div class="headline">Alarme:</div>
                 <span>type: {{device.alarme.type}}</span>
-                <v-icon
-                    medium
-                >
+                <v-icon medium>
                     alarme
                 </v-icon>
             </v-card-title>
@@ -39,15 +37,6 @@
     import {db} from '@/main.js'
 
     export default {
-        props: ['device'],
-        data() {
-            return {
-                datapti:{
-
-                }
-            }
-        }
-
-
+        props: ['device']
     }
 </script>

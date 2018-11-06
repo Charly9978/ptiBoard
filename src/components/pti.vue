@@ -84,20 +84,21 @@
                                 </v-list-tile>
                                 <v-list-tile>
                                     <v-list-tile-content>
-                                        <v-list-tile-title>Date de début d'utilistion</v-list-tile-title>
-                                        <v-list-tile-sub-title>coucoubis</v-list-tile-sub-title>
+                                        <v-list-tile-title>Date de début d'utilisation</v-list-tile-title>
+                                        <v-list-tile-sub-title>{{typeof device.user.date}}</v-list-tile-sub-title>
                                     </v-list-tile-content>
                                 </v-list-tile>
 
 
                             </v-list-group>
-
+                        </v-list>
+                        <v-list two-line>
                             <v-list-tile>
                                 <v-list-tile-content>
                                     <v-list-tile-title>Situation</v-list-tile-title>
                                     <v-list-tile-sub-title>{{device.inCharge.status?'En cours de charge':`En cours d'utilisation`}}</v-list-tile-sub-title>
                                     <v-spacer></v-spacer>
-                                    <v-list-tile-sub-title>{{device.levelBattery}}%</v-list-tile-sub-title>
+                                    <v-list-tile-sub-title>Charge: {{device.levelBattery}}%</v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                         </v-list>
@@ -171,9 +172,7 @@
 
 <script>
     import mappti from "@/components/mapPTI.vue";
-    import {
-        db
-    } from "@/main.js";
+    import {db} from "@/main.js";
 
     export default {
         components: {
@@ -183,12 +182,12 @@
             return {
                 selected: 1,
                 nbrs: [1, 10, 20],
-                alarm: "true",
                 newUser: {
                     name: null,
                     company: null,
                     useArea: null,
-                    tel: null
+                    tel: null,
+                    date:null
                 },
                 id: this.$route.params.id,
                 dialog: false,
@@ -205,28 +204,30 @@
                 this.dialog = true;
             },
             sendNewUser() {
+                this.newUser.date = new Date();
                 db.collection('Devices').doc(this.id).update({
                         user: this.newUser
                     })
                     .then(() => {
-                        console.log(`Nouvel User enregistrer pour le bip ${this.id}`);
+                        console.log(`Nouvel utilisateur enregistré pour le bip ${this.id}`);
                         this.dialog = false
                     })
-                    .catch(() => console.error(`echec d'enregistrement du nouvel utilisateur pour le bip ${this.id}`))
+                    .catch(() => console.error(`échec de l'enregistrement du nouvel utilisateur pour le bip ${this.id}`))
             },
             clearUser() {
                 this.newUser.name = null;
                 this.newUser.company = null;
                 this.newUser.tel = null;
                 this.newUser.useArea = null;
+                this.newUser.date = null;
                 db.collection('Devices').doc(this.id).update({
                         user: this.newUser
                     })
                     .then(() => {
-                        console.log(`User effacé pour le bip ${this.id}`);
+                        console.log(`Utilisateur effacé pour le bip ${this.id}`);
                         this.dialog = false
                     })
-                    .catch(() => console.error(`echec d'enregistrement du nouvel utilisateur pour le bip ${this.id}`))
+                    .catch(() => console.error(`Echec de la suppression du nouvel utilisateur pour le bip ${this.id}`))
 
             },
             alarmeOff() {
@@ -239,7 +240,7 @@
                         this.dialogConfirm = false
                     })
                     .catch(() => {
-                        console.error(`echec de l'effacement de l'alarme pour le bip ${this.id}`)
+                        console.error(`Echec de la suppression de l'alarme pour le bip ${this.id}`)
                         this.dialogConfirm = false
                     })
             },

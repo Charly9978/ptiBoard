@@ -14,6 +14,10 @@ const getters = {
     },
     getAlarme:(state)=>{
       return state.alarme
+    },
+    getDevices:(state)=>{
+      return state.all
+
     }
 }
 
@@ -63,7 +67,6 @@ const mutations = {
 }
 
 export default {
-  //namespaced: true,
   state,
   getters,
   actions,

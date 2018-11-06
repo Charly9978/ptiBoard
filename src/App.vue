@@ -11,7 +11,7 @@
       app
     >
       <v-list dense>
-        <v-list-tile @click="coucou">
+        <v-list-tile @click="goHome">
           <v-list-tile-action >
             <v-icon>home</v-icon>
           </v-list-tile-action>
@@ -51,8 +51,6 @@
 
 
 
-import { mapState, mapActions } from 'vuex'
-
   export default {
     created(){
        this.$store.dispatch('getAllDevices')//devices/
@@ -60,8 +58,6 @@ import { mapState, mapActions } from 'vuex'
     data(){
       return{
         drawer: false,
-        //datas:[],
-        //newAlarm:{}
       } 
       },
   computed:{
@@ -70,7 +66,7 @@ import { mapState, mapActions } from 'vuex'
     }
   },
     methods:{
-      coucou () {
+      goHome () {
         this.drawer = !this.drawer;
         this.$router.push('/')
       } 
