@@ -11,10 +11,9 @@
 
 
                     <v-card class="my-3" v-show="device.alarme.type">
-                        <v-toolbar color="error">
+                        <v-toolbar v-bind:class="device.alarme.type === 'lowBattery' ? 'warning' : 'error' ">
                             <v-icon>warning</v-icon>
-                            <v-toolbar-title>Alarme:</v-toolbar-title>
-                            <span>{{device.alarme.type}}</span>
+                            <v-toolbar-title>Alarme: <span class="subheading">{{device.alarme.type}}</span></v-toolbar-title>
                             <v-spacer></v-spacer>
                             <v-btn @click="alarmeBellOff" icon>
                                 <v-icon>notifications_off</v-icon>
