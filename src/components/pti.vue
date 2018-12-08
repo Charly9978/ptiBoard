@@ -9,6 +9,17 @@
             <v-flex xs12 md5 lm5 xl5>
                 <v-layout column>
 
+                     <v-card class="my-3" v-if="device.lostConnection">
+                        <v-toolbar class= 'error'>
+                            <v-icon>warning</v-icon>
+                            <v-toolbar-title><span class="subheading">Perte de connection depuis {{device.lastConnectionDate.toLocaleString()}}</span></v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-btn @click="alarmeBellOff" icon>
+                                <v-icon>notifications_off</v-icon>
+                            </v-btn>
+                        </v-toolbar>
+                    </v-card>
+
 
                     <v-card class="my-3" v-show="device.alarme.type">
                         <v-toolbar v-bind:class="device.alarme.type === 'lowBattery' ? 'warning' : 'error' ">

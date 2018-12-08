@@ -45,7 +45,7 @@
 
   export default {
     created(){
-       this.$store.dispatch('getAllDevices')//devices/
+       this.$store.dispatch('getAllDevices')
        },    
     data(){
       return{

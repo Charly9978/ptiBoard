@@ -33,9 +33,11 @@ const actions = {
           telBip:doc.data().telBip,
           useArea:doc.data().useArea,
           alarme:doc.data().alarme,
+          lastConnectionDate:doc.data().lastConnectionDate,
           inCharge:doc.data().inCharge,
           levelBattery:doc.data().levelBattery,
-          user:doc.data().user
+          user:doc.data().user,
+          lostConnection:false
         };
         console.log(data)
         console.log(data.name)
@@ -62,6 +64,14 @@ const mutations = {
   },
   setAlarmeOff(state){
     state.alarme = false
+  },
+  setLostConnection(state,id){
+    const device = state.all.find(device=>device.id === id);
+    device.lostConnection = true
+  },
+  setGetConnection(state,id){
+    const device = state.all.find(device=>device.id === id);
+    device.lostConnection = false
   }
 
 }
