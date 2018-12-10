@@ -4,7 +4,7 @@ import {db} from '@/main.js'
 // initial state
 const state = {
   all: [],
-  alarme:false
+  alarme:false,
 }
 
 // getters
@@ -37,7 +37,8 @@ const actions = {
           inCharge:doc.data().inCharge,
           levelBattery:doc.data().levelBattery,
           user:doc.data().user,
-          lostConnection:false
+          lostConnection:doc.data().lostConnection
+        
         };
         console.log(data)
         console.log(data.name)

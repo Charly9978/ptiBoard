@@ -52,6 +52,7 @@
         </v-card>
 </template>
 <script>
+import {db} from "@/main.js";
 
     export default {
         props: ['device'],
@@ -69,10 +70,15 @@
                 this.now = Date.now();
 
                 if(this.device.lastConnectionDate.getTime()+this.checkTime<this.now && this.device.lostConnection===false){
-                    this.$store.commit("setLostConnection",this.device.id)
-                    this.$store.commit("setAlarmeOn")
-                }else if(this.device.lastConnectionDate.getTime()+this.checkTime>this.now && this.device.lostConnection===true){
-                    this.$store.commit("setGetConnection",this.device.id)
+                    this.$store.commit("setAlarmeOn");
+                    db.collection('Devices').doc(this.device.id).update({
+                        lostConnection: true
+                    })
+                    .then(() => {
+                        console.log(`enregistrement perte connection pour le bip ${this.device.id}`);
+                    })
+                    .catch(() => console.error(`échec de l'enregistrement de perte de connection pour le bip ${this.device.id}`))
+
                 }
 
             }
