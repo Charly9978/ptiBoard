@@ -40,9 +40,6 @@ const actions = {
           lostConnection:doc.data().lostConnection
         
         };
-        console.log(data)
-        console.log(data.name)
-        console.log(data.alarme.type)
         datas.push(data);
         if(data.alarme.type){
           commit('setAlarmeOn')

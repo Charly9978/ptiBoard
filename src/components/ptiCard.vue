@@ -59,17 +59,19 @@ import {db} from "@/main.js";
 
         data(){
             return{
-             now:0,
-             checkTime: 1000*60*15
+             checkTime: 1000*60*15,
+             checkData:null
             }
 
         },
 
         methods:{
             checkDateLastConnection(){
-                this.now = Date.now();
+                this.checkData = setInterval(()=>{
+                const date = new Date;
+                const now = date.getTime();
 
-                if(this.device.lastConnectionDate.getTime()+this.checkTime<this.now && this.device.lostConnection===false){
+                if(this.device.lastConnectionDate.getTime()+this.checkTime<now && this.device.lostConnection===false){
                     this.$store.commit("setAlarmeOn");
                     db.collection('Devices').doc(this.device.id).update({
                         lostConnection: true
@@ -81,13 +83,18 @@ import {db} from "@/main.js";
 
                 }
 
+                },1000*60*2)
+                
+
             }
         }
             ,
           mounted(){
-  	        this.checkDateLastConnection();
-  	        setInterval(this.checkDateLastConnection.bind(this) , 1000*60*3)
-  }
+              this.checkDateLastConnection();
+            },
+            beforeDestroy () {
+	            clearInterval(this.checkData)
+            },
 
 
         
