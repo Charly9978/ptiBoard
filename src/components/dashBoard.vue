@@ -1,9 +1,9 @@
 <template>
 
 
-      <v-layout row>
+      <v-layout row v-if="devices">
   
-        <v-flex ma-3 xs6 md2 lm2 xl2 v-if="devices" v-for="(device, index) in devices" :key="index">
+        <v-flex ma-3 xs6 md2 lm2 xl2  v-for="(device, index) in devices" :key="index">
             <pticard v-bind:device="device"/>
         </v-flex>
 
