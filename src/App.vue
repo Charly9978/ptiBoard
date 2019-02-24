@@ -19,6 +19,14 @@
             <v-list-tile-title>Home</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile @click="history">
+          <v-list-tile-action >
+            <v-icon>notifications_active</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Historique des alarmes</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="indigo" dark fixed app>
@@ -61,7 +69,11 @@
       goHome () {
         this.drawer = !this.drawer;
         this.$router.push('/')
-      } 
+      }, 
+      history(){
+        this.drawer = !this.drawer;
+        this.$router.push('/historyboard');
+      }
 
     }  
       }
