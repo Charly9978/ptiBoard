@@ -2,7 +2,7 @@
     <div>
         <v-layout row>
             <v-flex xs12 md7 lm7 xl7>
-                <mappti v-bind:nbr='selected' v-bind:id="id" />
+                <mappti style="z-index: 0" v-bind:nbr='selected' v-bind:id="id" />
             </v-flex>
 
 
