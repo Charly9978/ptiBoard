@@ -92,6 +92,7 @@
 import {db} from '@/main.js'
 import alarmsTable from './alarmsDatasTable.vue'
 import donutGraph from './donutGraph.vue'
+import sumByLabel from './historyAlarmsFunctions.js'
 
 export default {
     components:{
@@ -120,7 +121,7 @@ export default {
 
         db.collection('Alarms')
         .where('date','>',new Date(this.dateBegin))
-        .where('date','<=',new Date(this.dateEnd.concat(' 23:00:00')))
+        .where('date','<=',new Date(this.dateEnd.concat(' 23:59:59')))
         .get()
         .then((querySnapshot)=>{
           this.datas = []
@@ -135,24 +136,11 @@ export default {
             )
           }
           //compter le nombre d'alarme par type d'alarme
-         this.sumByLabel('alarme','nbAlarmByType','typeOfAlarmLabels')
+         sumByLabel('alarme','nbAlarmByType','typeOfAlarmLabels')
 
           //compter le nombre d'alarme par zone de rattachement
-          this.sumByLabel('useArea','nbAlarmByUseArea','useAreaLabels')
+        sumByLabel('useArea','nbAlarmByUseArea','useAreaLabels')
         })
-      },
-      sumByLabel(dataProprity,sum,labels){
-            let sumObject = this.datas.reduce((stat,data)=>{
-            stat[data[dataProprity]]?stat[data[dataProprity]]+=1:stat[data[dataProprity]]=1;
-            return stat
-            },{})
-            this[sum]=[]
-            this[labels]=[]
-            for(var label in sumObject){
-              this[sum].push(sumObject[label])
-              this[labels].push(label)
-            }
-
       },
       chartData(data,labels){
        return {

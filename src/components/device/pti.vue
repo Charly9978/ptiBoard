@@ -181,7 +181,7 @@
 </template>
 
 <script>
-    import mappti from "@/components/mapPTIbis.vue";
+    import mappti from "./mapComponent/mapPTIbis.vue";
     import {db} from "@/main.js";
 
     export default {

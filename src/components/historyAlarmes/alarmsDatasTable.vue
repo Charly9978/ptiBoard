@@ -28,12 +28,21 @@
         Your search for "{{ search }}" found no results.
       </v-alert>
     </v-data-table>
+    <extractCsv
+    :datas="datas"
+    />
   </v-card>
 </template>
 
 <script>
 
+import extractCsv from './extractCsv.vue'
+
   export default {
+
+    components:{
+      extractCsv
+    },
       props:['datas'],
 
     data () {

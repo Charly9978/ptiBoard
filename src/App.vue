@@ -19,12 +19,20 @@
             <v-list-tile-title>Home</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="history">
+        <v-list-tile @click="historyAlarms">
           <v-list-tile-action >
             <v-icon>notifications_active</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Historique des alarmes</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile @click="historyUses">
+          <v-list-tile-action >
+            <v-icon>history</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Historique d'utilisation</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -70,9 +78,13 @@
         this.drawer = !this.drawer;
         this.$router.push('/')
       }, 
-      history(){
+      historyAlarms(){
         this.drawer = !this.drawer;
-        this.$router.push('/historyboard');
+        this.$router.push('/alarmsHistoryboard');
+      },
+      historyUses(){
+        this.drawer = !this.drawer;
+        this.$router.push('/usesHistoryboard');
       }
 
     }  

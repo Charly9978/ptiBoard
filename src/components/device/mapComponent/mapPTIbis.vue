@@ -5,6 +5,7 @@
 <script>
 
 import {db} from '@/main.js'
+import {greenIcon,blueIcon,redIcon,orangeIcon} from './icon.js'
 
 //import L from 'leaflet'
 import 'leaflet-polylinedecorator'
@@ -24,7 +25,8 @@ export default {
       infoWindow: null,
       markers: [],
       markersLayer:null,
-      polylineLayer:null
+      polylineLayer:null,
+      polylineDecorator:null
     }
   },
   methods :{
@@ -55,19 +57,42 @@ export default {
 this.afficheMarkers()
       
     })},
-    afficheMarkers: function(){
+    afficheMarkers(){
       console.log("montage des markers")
       this.markers=[];
       if(this.markersLayer!=null){
         this.markersLayer.remove()
-      }    
+      }
+
+      
       this.positions.forEach((data)=>{
-        this.markers.push(L.marker([data.position._lat, data.position._long]))
+
+        let colorIcon
+          if(data.alarme.length>0 && !data.alarme.lowBattery ){
+            colorIcon = redIcon
+          }else if(data.alarme.lowBattery) {
+            colorIcon = orangeIcon
+          } else if(data.inCharge) {
+            colorIcon = blueIcon
+          }else{
+            colorIcon = greenIcon
+          }
+
+        const html = `<b>Date:${data.date.toLocaleString()}</b>
+                      <br/>Vitesse:${data.speed}km/h 
+                      <br/>Direction: ${data.dir} 
+                      <br/>Précision Satellelite: ${data.fixedSatellite}/${data.availableSatellite}
+                      <br/>Altitude: ${data.alt}m
+                      <br/>Batterie: ${data.levelBattery}%
+                      <br/><b>Alarme: ${data.alarme}`;
+
+        
+        this.markers.push(L.marker([data.position._lat, data.position._long], {icon: colorIcon}).bindPopup(html))
       })
       this.markersLayer = L.layerGroup(this.markers).addTo(this.myMap)
       this.affichePolyLine()
     },
-   affichePolyLine: function(){
+   affichePolyLine(){
      const datasPolyline=[]
      if(this.polylineLayer!=null){
        this.polylineLayer.remove()
@@ -76,12 +101,19 @@ this.afficheMarkers()
        datasPolyline.push([data.position._lat, data.position._long])
      })
     this.polylineLayer = L.polyline(datasPolyline).addTo(this.myMap)
-     L.polylineDecorator(this.polylineLayer, {
+    this.afficheDecorator()
+   },
+   afficheDecorator(){
+     if(this.polylineDecorator != null){
+       this.polylineDecorator.remove()
+     }
+     this.polylineDecorator = L.polylineDecorator(this.polylineLayer, {
     patterns: [
         // defines a pattern of 10px-wide dashes, repeated every 20px on the line
         {offset: 50, repeat: 50, symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {stroke: true}})}
     ]
 }).addTo(this.myMap)
+
    }
     },
     computed:{

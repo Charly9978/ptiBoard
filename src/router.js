@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import dashboard from './components/dashBoard.vue'
-import pti from './components/pti.vue'
-import historyboard from './components/historyBoard.vue'
+import dashboard from './components/dashBoard/dashBoard.vue'
+import pti from './components/device/pti.vue'
+import alarmsHistoryboard from './components/historyAlarmes/alarmsHistoryBoard.vue'
+import usesHistoryBoard from './components/historyUsed/usesHistoryBoard.vue'
 
 Vue.use(Router)
 
@@ -15,9 +16,14 @@ export default new Router({
       name: 'dashboard',
       component: dashboard
     },{
-      path: '/historyboard',
-      name:'historyboard',
-      component: historyboard
+      path: '/alarmsHistoryboard',
+      name:'alarmsHistoryboard',
+      component: alarmsHistoryboard
+    },
+    {
+      path: '/usesHistoryBoard',
+      name:'usesHistoryBoard',
+      component: usesHistoryBoard
     },
     {
       path: '/device/:id',
