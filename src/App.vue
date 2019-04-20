@@ -16,7 +16,7 @@
             <v-icon>home</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Home</v-list-tile-title>
+            <v-list-tile-title>Tableau de bord</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile @click="historyAlarms">
@@ -39,7 +39,7 @@
     </v-navigation-drawer>
     <v-toolbar color="indigo" dark fixed app>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>Tableau de bord Bips PTI</v-toolbar-title>
+      <v-toolbar-title>{{$route.name}}</v-toolbar-title>
     </v-toolbar>
     <v-content>
       <v-container fluid>
@@ -76,7 +76,7 @@
     methods:{
       goHome () {
         this.drawer = !this.drawer;
-        this.$router.push('/')
+        this.$router.push('/');
       }, 
       historyAlarms(){
         this.drawer = !this.drawer;

@@ -13,21 +13,21 @@ export default new Router({
   routes: [
     {
       path: '/dashboard',
-      name: 'dashboard',
+      name: 'Tableau de bord bips PTI',
       component: dashboard
     },{
       path: '/alarmsHistoryboard',
-      name:'alarmsHistoryboard',
+      name:'Historique des alarmes',
       component: alarmsHistoryboard
     },
     {
       path: '/usesHistoryBoard',
-      name:'usesHistoryBoard',
+      name:"Historique d'utilisation",
       component: usesHistoryBoard
     },
     {
       path: '/device/:id',
-      name: 'device',
+      name: 'Information sur le Bip',
       component: pti
     },
     {

@@ -92,7 +92,7 @@
 import {db} from '@/main.js'
 import alarmsTable from './alarmsDatasTable.vue'
 import donutGraph from './donutGraph.vue'
-import sumByLabel from './historyAlarmsFunctions.js'
+import {sumByLabel,chartData} from './historyAlarmsFunctions.js';
 
 export default {
     components:{
@@ -110,8 +110,8 @@ export default {
             datas:null,
             nbAlarmByType:[],
             typeOfAlarmLabels:[],
-            nbAlarmByUseArea:[1],
-            useAreaLabels:[1]
+            nbAlarmByUseArea:[],
+            useAreaLabels:[]
 
         }
     },
@@ -136,27 +136,17 @@ export default {
             )
           }
           //compter le nombre d'alarme par type d'alarme
-         sumByLabel('alarme','nbAlarmByType','typeOfAlarmLabels')
+         const sumByAlarme = sumByLabel(this.datas,'alarme')
+         this.nbAlarmByType = sumByAlarme.sum;
+         this.typeOfAlarmLabels = sumByAlarme.labels
 
           //compter le nombre d'alarme par zone de rattachement
-        sumByLabel('useArea','nbAlarmByUseArea','useAreaLabels')
+          const sumByArea = sumByLabel(this.datas,'useArea');
+          this.nbAlarmByUseArea = sumByArea.sum;
+          this.useAreaLabels = sumByArea.labels;
+        
         })
       },
-      chartData(data,labels){
-       return {
-            datasets: [{
-                data: data,
-                backgroundColor: [
-                  '#9d44b5',
-                  '#b5446e',
-                  '#00D8FF',
-                  '#DD1B16']
-                    }],
-                labels: labels
-      
-              }
-      }
-
     },
     computed:{
     devices(){
@@ -170,10 +160,10 @@ export default {
          return devicesName;
     },
     chartTypeOfAlarmData(){
-      return this.chartData(this.nbAlarmByType,this.typeOfAlarmLabels)
+      return chartData(this.nbAlarmByType,this.typeOfAlarmLabels)
     },
     chartUseAreaData(){
-      return this.chartData(this.nbAlarmByUseArea,this.useAreaLabels)
+      return chartData(this.nbAlarmByUseArea,this.useAreaLabels)
     }
 
     
